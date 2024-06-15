@@ -41,9 +41,20 @@ export async function POST(req: NextRequest) {
     }
 
     const token = await createJwtToken(user.id, user.name);
+    const resData = {
+      name: user.name,
+      email: user.email,
+      dob: user?.dob,
+      address: user?.address,
+    };
 
     const res = NextResponse.json(
-      { message: "Login successful", success: true, token: token },
+      {
+        message: "Login successful",
+        success: true,
+        data: resData,
+        token: token,
+      },
       { status: 200 }
     );
     res.cookies.set("token", token);
