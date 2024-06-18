@@ -5,16 +5,13 @@ import prisma from "@/db";
 export async function POST(req: NextRequest) {
   try {
     // Authorization Token
-    console.log("HEADERS", req.headers);
     const bearerToken = req.headers.get("authorization") || "";
-    console.log("BEARER", bearerToken);
     const token = bearerToken.split(" ").at(1) || "";
-    console.log("TOKEN", token);
     const payload = await verifyJwtToken(token);
-    console.log("PAYLOAD", payload);
     const userId = payload?.payload?.userId || "";
     console.log("userID", userId);
 
+    console.log("REQUEST", req);
     const body = await req.json();
     console.log("BODY", body);
 
