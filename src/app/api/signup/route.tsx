@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
 import { signupSchema } from "@/schema/signupSchema";
 import bcryptjs from "bcryptjs";
+import sendEmailVerificationToken from "@/utils/sendEmailVerificationToken";
+import { createJwtToken } from "@/utils/jwtToken";
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,12 +45,17 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json(
-      { message: "User created", success: true },
+    await sendEmailVerificationToken({ email: email, userId: user.id });
+
+    const token = await createJwtToken(user.id, user.name);
+
+    const res = NextResponse.json(
+      { message: "User created", success: true, token: token },
       {
         status: 200,
       }
     );
+    return res;
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message, success: false },

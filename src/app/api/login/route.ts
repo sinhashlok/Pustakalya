@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/db";
 import { loginSchema } from "@/schema/loginSchema";
 import bcryptjs from "bcryptjs";
-import { createJwtToken } from "@/utils/jetToken";
+import { createJwtToken } from "@/utils/jwtToken";
 
 export async function POST(req: NextRequest) {
   try {
@@ -17,13 +17,13 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password } = body;
+    
+    // Check if user exists
     const user = await prisma.user.findUnique({
       where: {
         email: email,
       },
     });
-
-    // Check if user exists
     if (!user) {
       return NextResponse.json(
         { message: "No such user exists", success: false },
