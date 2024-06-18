@@ -9,11 +9,9 @@ export async function POST(req: NextRequest) {
     const token = bearerToken.split(" ").at(1) || "";
     const payload = await verifyJwtToken(token);
     const userId = payload?.payload?.userId || "";
-    console.log("userID", userId);
 
     console.log("REQUEST", req);
     const body = await req.json();
-    console.log("BODY", body);
 
     const { code }: { code: string } = body;
 

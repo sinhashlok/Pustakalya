@@ -7,6 +7,8 @@ import { createJwtToken } from "@/utils/jwtToken";
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("REQUEST", req);
+
     const body = await req.json();
     const isValidData = signupSchema.safeParse(body);
 
