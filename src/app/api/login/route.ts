@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password } = body;
-    
+
     // Check if user exists
     const user = await prisma.user.findUnique({
       where: {
@@ -42,10 +42,11 @@ export async function POST(req: NextRequest) {
 
     const token = await createJwtToken(user.id, user.name);
     const resData = {
+      id: user.id,
       name: user.name,
       email: user.email,
-      dob: user?.dob,
-      address: user?.address,
+      dob: user.dob,
+      address: user.address,
     };
 
     const res = NextResponse.json(
