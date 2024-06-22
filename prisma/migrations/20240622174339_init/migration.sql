@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Books" ALTER COLUMN "eTag" SET DATA TYPE TEXT;

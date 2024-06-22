@@ -24,3 +24,16 @@ model User {
   verifyToken String?
   isVerified  Boolean   @default(false)
 }
+
+model Books {
+  id          String @id
+  eTag        String @unique
+  title       String
+  subtitle    String
+  genreType   String
+  author      String @default("")
+  description String
+  thumbnail   String
+  rating      String @default("N/A")
+  price       Int    @default(200)
+}

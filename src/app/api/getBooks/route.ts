@@ -1,29 +1,68 @@
+import prisma from "@/db";
+import { BOOK } from "@/types/booksType";
 import { NextResponse } from "next/server";
+
+interface GENRE {
+  genre: string;
+  books: BOOK[];
+}
 
 export async function GET() {
   try {
-    const genre = [
-      "",
-      "science",
-      "psychology",
-      "Fiction",
-      "Romance",
-      "Drama",
-      "anime",
+    let genre: GENRE[] = [
+      { genre: "Science", books: [] },
+      { genre: "Psychology", books: [] },
+      { genre: "Fiction", books: [] },
+      { genre: "Romance", books: [] },
+      { genre: "Drama", books: [] },
+      { genre: "Anime", books: [] },
+      { genre: "Crime", books: [] },
+      { genre: "Horror", books: [] },
+      { genre: "Comedy", books: [] },
+      { genre: "History", books: [] },
     ];
-    const allData: any = await Promise.all(
-      genre.map(async (q) => {
-        const res = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=subject:${q}&key=AIzaSyDFpeFtNdYLxa7FFf4E1wuES1m9T2xYyzw`
-        );
-        const data = await res.json();
-        return data;
-      })
-    );
+
+    const books: BOOK[] = await prisma.books.findMany({});
+    books.map((book: BOOK) => {
+      switch (book.genreType) {
+        case "science":
+          genre[0].books.push(book);
+          break;
+        case "psychology":
+          genre[1].books.push(book);
+          break;
+        case "fiction":
+          genre[2].books.push(book);
+          break;
+        case "romance":
+          genre[3].books.push(book);
+          break;
+        case "drama":
+          genre[4].books.push(book);
+          break;
+        case "anime":
+          genre[5].books.push(book);
+          break;
+        case "crime":
+          genre[6].books.push(book);
+          break;
+        case "horror":
+          genre[7].books.push(book);
+          break;
+        case "comedy":
+          genre[8].books.push(book);
+          break;
+        case "history":
+          genre[9].books.push(book);
+          break;
+      }
+    });
 
     return NextResponse.json(
       {
-        data: allData,
+        message: "Found all books",
+        success: true,
+        data: genre,
       },
       { status: 200 }
     );
