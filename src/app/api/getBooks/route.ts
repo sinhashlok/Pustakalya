@@ -1,13 +1,26 @@
 import prisma from "@/db";
 import { BOOK } from "@/types/booksType";
-import { NextResponse } from "next/server";
+import { verifyJwtToken } from "@/utils/jwtToken";
+import { NextRequest, NextResponse } from "next/server";
 
 interface GENRE {
   genre: string;
   books: BOOK[];
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // Authorization Token
+  const bearerToken = req.headers.get("authorization") || "";
+  const token = bearerToken.split(" ").at(1) || "";
+  const payload = await verifyJwtToken(token);
+  const userId = payload?.payload?.userId || "";
+  if (!userId) {
+    return NextResponse.json(
+      { message: "Unauthenticated", success: false },
+      { status: 401 }
+    );
+  }
+
   try {
     let genre: GENRE[] = [
       { genre: "Science", books: [] },
