@@ -9,19 +9,19 @@ interface GENRE {
 }
 
 export async function GET(req: NextRequest) {
-  // Authorization Token
-  const bearerToken = req.headers.get("authorization") || "";
-  const token = bearerToken.split(" ").at(1) || "";
-  const payload = await verifyJwtToken(token);
-  const userId = payload?.payload?.userId || "";
-  if (!userId) {
-    return NextResponse.json(
-      { message: "Unauthenticated", success: false },
-      { status: 401 }
-    );
-  }
-
   try {
+    // Authorization Token
+    const bearerToken = req.headers.get("authorization") || "";
+    const token = bearerToken.split(" ").at(1) || "";
+    const payload = await verifyJwtToken(token);
+    const userId = payload?.payload?.userId || "";
+    if (!userId) {
+      return NextResponse.json(
+        { message: "Unauthenticated", success: false },
+        { status: 401 }
+      );
+    }
+
     let genre: GENRE[] = [
       { genre: "Science", books: [] },
       { genre: "Psychology", books: [] },
