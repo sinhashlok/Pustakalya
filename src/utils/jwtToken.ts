@@ -8,7 +8,6 @@ export async function createJwtToken(userId: any, name: string) {
     name: name,
   })
     .setProtectedHeader({ alg })
-    .setExpirationTime("1d")
     .sign(secret);
 
   return token;
