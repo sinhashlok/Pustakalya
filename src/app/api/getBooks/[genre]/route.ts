@@ -31,7 +31,7 @@ export async function GET(
       {
         message: "Found books",
         success: true,
-        data: books,
+        books: books,
       },
       { status: 200 }
     );
