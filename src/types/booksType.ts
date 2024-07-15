@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime/library";
+
 export interface BOOK {
   eTag: string;
   id: string;
@@ -6,8 +8,7 @@ export interface BOOK {
   genreType: string;
   author: string;
   description: string;
-  rating: string;
+  rating: Decimal;
   thumbnail: string;
   price: number;
 }
-

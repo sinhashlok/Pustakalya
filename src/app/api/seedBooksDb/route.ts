@@ -28,7 +28,7 @@ export async function POST(req: Request) {
           author: book.author,
           description: book.description,
           thumbnail: book.thumbnail,
-          rating: book.rating,
+          rating: Math.random() * 5,
           price: book.price,
         },
       });

@@ -22,3 +22,14 @@ export async function verifyJwtToken(jwt: any) {
     return null;
   }
 }
+
+export async function authTokenUserId(bearerToken: string) {
+  const token = bearerToken.split(" ").at(1) || "";
+  const payload = await verifyJwtToken(token);
+  const userId = payload?.payload?.userId || "";
+  if (!userId) {
+    return null;
+  }
+
+  return userId;
+}

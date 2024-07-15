@@ -1,12 +1,8 @@
 import prisma from "@/db";
-import { BOOK } from "@/types/booksType";
 import { authTokenUserId } from "@/utils/jwtToken";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { genre: string } },
-) {
+export async function POST(req: NextRequest) {
   try {
     // Authorization Token
     const bearerToken = req.headers.get("authorization") || "";
@@ -17,21 +13,13 @@ export async function GET(
         { status: 401 },
       );
     }
-    const genre = params.genre;
 
-    const books: BOOK[] = await prisma.books.findMany({
-      where: {
-        genreType: genre,
-      },
+    await prisma.user.delete({
+      where: { id: userId },
     });
 
     return NextResponse.json(
-      {
-        message: "Found books",
-        success: true,
-        genre: genre,
-        books: books,
-      },
+      { message: "Account deleted", success: true },
       { status: 200 },
     );
   } catch (error: any) {

@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const isValidData = signupSchema.safeParse(body);
 
-    if (!isValidData) {
+    if (!isValidData.success) {
       return NextResponse.json(
         { message: "Invalid data", success: false },
         { status: 400 }

@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     // Zod validation
     const isValidLogInData = loginSchema.safeParse(body);
-    if (!isValidLogInData) {
+    if (!isValidLogInData.success) {
       return NextResponse.json(
         { message: "Invalid Input", success: false },
         { status: 400 }

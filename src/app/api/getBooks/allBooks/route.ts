@@ -1,6 +1,6 @@
 import prisma from "@/db";
 import { BOOK } from "@/types/booksType";
-import { verifyJwtToken } from "@/utils/jwtToken";
+import { authTokenUserId } from "@/utils/jwtToken";
 import { NextRequest, NextResponse } from "next/server";
 
 interface GENRE {
@@ -12,13 +12,11 @@ export async function GET(req: NextRequest) {
   try {
     // Authorization Token
     const bearerToken = req.headers.get("authorization") || "";
-    const token = bearerToken.split(" ").at(1) || "";
-    const payload = await verifyJwtToken(token);
-    const userId = payload?.payload?.userId || "";
+    const userId = await authTokenUserId(bearerToken);
     if (!userId) {
       return NextResponse.json(
         { message: "Unauthenticated", success: false },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -77,12 +75,12 @@ export async function GET(req: NextRequest) {
         success: true,
         data: genre,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error: any) {
     return NextResponse.json(
       { error: error.message, success: false },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

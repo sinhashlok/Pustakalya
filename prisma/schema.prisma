@@ -34,6 +34,6 @@ model Books {
   author      String @default("")
   description String
   thumbnail   String
-  rating      String @default("N/A")
+  rating      Decimal @default(0.00)
   price       Int    @default(200)
 }
